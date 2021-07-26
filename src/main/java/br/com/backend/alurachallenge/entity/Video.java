@@ -15,6 +15,10 @@ public class Video {
 	private String descricao;
 	private String url;
 
+	public Video() {
+		super();
+	}
+
 	public Video(String titulo, String descricao, String url) {
 		super();
 		this.titulo = titulo;

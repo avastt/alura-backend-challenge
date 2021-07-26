@@ -11,6 +11,12 @@ public class VideoDto {
 	private String descricao;
 	private String url;
 
+	
+	
+	public VideoDto() {
+		super();
+	}
+
 	public VideoDto(Video video) {
 		super();
 		this.id = video.getId();

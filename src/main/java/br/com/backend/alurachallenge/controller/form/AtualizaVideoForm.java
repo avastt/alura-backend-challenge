@@ -5,9 +5,9 @@ import javax.validation.constraints.NotEmpty;
 import com.sun.istack.NotNull;
 
 import br.com.backend.alurachallenge.entity.Video;
+import br.com.backend.alurachallenge.repository.VideoRepository;
 
-public class VideoForm {
-
+public class AtualizaVideoForm {
 	@NotNull
 	@NotEmpty
 	private String descricao;
@@ -44,9 +44,13 @@ public class VideoForm {
 		this.url = url;
 	}
 
-	public Video converter() {
+	public Video atualizar(Long id, VideoRepository videoRepository) {
 
-		return new Video(descricao, titulo, url);
+		Video video = videoRepository.getById(id);
+		video.setTitulo(this.titulo);
+		video.setDescricao(this.descricao);
+		video.setUrl(this.url);
+		
+		return video;
 	}
-
 }
