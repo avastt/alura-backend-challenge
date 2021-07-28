@@ -3,6 +3,7 @@ package br.com.backend.alurachallenge.controller;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -59,7 +60,8 @@ public class VideoController {
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity<VideoDto> cadastrarVideo (@RequestBody VideoForm videoForm) {
+	public ResponseEntity<VideoDto> cadastrarVideo (@RequestBody @Valid VideoForm videoForm) {
+		
 		
 		Video video = videoForm.converter();
 		videoRepository.save(video);
@@ -70,7 +72,7 @@ public class VideoController {
 	
 	@PutMapping("/atualiza/{id}")
 	@Transactional
-	public ResponseEntity<VideoDto> atualizarVideo (@PathVariable Long id, @RequestBody AtualizaVideoForm atualizaVideoForm) {
+	public ResponseEntity<VideoDto> atualizarVideo (@PathVariable Long id, @RequestBody @Valid AtualizaVideoForm atualizaVideoForm) {
 		
 		Optional<Video> optional = videoRepository.findById(id);
 		
