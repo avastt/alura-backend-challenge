@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,6 +80,20 @@ public class VideoController {
 			videoRepository.save(video);
 			
 			return new ResponseEntity<VideoDto>(new VideoDto(video), HttpStatus.OK);
+		}
+		//return ResponseEntity.notFound().build();
+		return new ResponseEntity<VideoDto>(new VideoDto(), HttpStatus.NOT_FOUND);
+	}
+	
+	@DeleteMapping("/deletar/{id}")
+	@Transactional
+	public ResponseEntity<VideoDto> deletarVideo (@PathVariable Long id) {
+		
+		Optional<Video> optional = videoRepository.findById(id);
+		
+		if(optional.isPresent()) {
+			videoRepository.deleteById(id);
+			return ResponseEntity.ok().build();
 		}
 		//return ResponseEntity.notFound().build();
 		return new ResponseEntity<VideoDto>(new VideoDto(), HttpStatus.NOT_FOUND);
