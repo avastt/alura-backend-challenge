@@ -4,31 +4,24 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
-public class Video {
+public class Categoria {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String titulo;
-	private String descricao;
-	private String url;
-	
-	@ManyToOne
-	private Categoria categoria;
+	private String cor;
 
-	public Video() {
+	public Categoria() {
 		super();
 	}
 
-	public Video(String titulo, String descricao, String url) {
+	public Categoria(String titulo, String cor) {
 		super();
 		this.titulo = titulo;
-		this.descricao = descricao;
-		this.url = url;
+		this.cor = cor;
 	}
 
 	public Long getId() {
@@ -47,20 +40,12 @@ public class Video {
 		this.titulo = titulo;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getCor() {
+		return cor;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
+	public void setCor(String cor) {
+		this.cor = cor;
 	}
 
 }

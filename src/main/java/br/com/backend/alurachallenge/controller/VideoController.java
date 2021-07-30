@@ -62,7 +62,6 @@ public class VideoController {
 	@Transactional
 	public ResponseEntity<VideoDto> cadastrarVideo (@RequestBody @Valid VideoForm videoForm) {
 		
-		
 		Video video = videoForm.converter();
 		videoRepository.save(video);
 		
