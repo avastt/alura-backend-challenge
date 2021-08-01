@@ -25,6 +25,7 @@ import br.com.backend.alurachallenge.controller.dto.VideoDto;
 import br.com.backend.alurachallenge.controller.form.AtualizaVideoForm;
 import br.com.backend.alurachallenge.controller.form.VideoForm;
 import br.com.backend.alurachallenge.entity.Video;
+import br.com.backend.alurachallenge.repository.CategoriaRepository;
 import br.com.backend.alurachallenge.repository.VideoRepository;
 
 @RestController
@@ -33,6 +34,9 @@ public class VideoController {
 
 	@Autowired
 	private VideoRepository videoRepository;
+	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 	
 	@GetMapping
 	public Page<VideoDto> listaVideos (
@@ -62,7 +66,7 @@ public class VideoController {
 	@Transactional
 	public ResponseEntity<VideoDto> cadastrarVideo (@RequestBody @Valid VideoForm videoForm) {
 		
-		Video video = videoForm.converter();
+		Video video = videoForm.converter(categoriaRepository);
 		videoRepository.save(video);
 		
 		
@@ -77,7 +81,7 @@ public class VideoController {
 		
 		if(optional.isPresent()) {
 			
-			Video video = atualizaVideoForm.atualizar(id, videoRepository);
+			Video video = atualizaVideoForm.atualizar(id, videoRepository, categoriaRepository);
 			videoRepository.save(video);
 			
 			return new ResponseEntity<VideoDto>(new VideoDto(video), HttpStatus.OK);

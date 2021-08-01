@@ -10,9 +10,8 @@ public class VideoDto {
 	private String titulo;
 	private String descricao;
 	private String url;
+	private CategoriaDto categoriaDto;
 
-	
-	
 	public VideoDto() {
 		super();
 	}
@@ -23,6 +22,8 @@ public class VideoDto {
 		this.titulo = video.getTitulo();
 		this.descricao = video.getDescricao();
 		this.url = video.getUrl();
+		CategoriaDto conversaoParaCatergoriaDto = new CategoriaDto(video.getCategoria());
+		this.categoriaDto = conversaoParaCatergoriaDto;
 	}
 
 	public Long getId() {
@@ -55,6 +56,14 @@ public class VideoDto {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public CategoriaDto getCategoriaDto() {
+		return categoriaDto;
+	}
+
+	public void setCategoriaDto(CategoriaDto categoriaDto) {
+		this.categoriaDto = categoriaDto;
 	}
 
 	public static Page<VideoDto> converter(Page<Video> videos) {
