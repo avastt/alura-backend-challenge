@@ -9,6 +9,11 @@ public class CategoriaDto {
 	private String titulo;
 	private String cor;
 
+	
+	public CategoriaDto() {
+		
+	}
+	
 	public CategoriaDto(Categoria categoria) {
 		super();
 		this.titulo = categoria.getTitulo();

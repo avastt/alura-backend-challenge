@@ -15,16 +15,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.backend.alurachallenge.controller.dto.CategoriaDto;
-import br.com.backend.alurachallenge.controller.dto.VideoDto;
+import br.com.backend.alurachallenge.controller.form.AtualizaCategoriaForm;
 import br.com.backend.alurachallenge.controller.form.CategoriaForm;
-import br.com.backend.alurachallenge.controller.form.VideoForm;
 import br.com.backend.alurachallenge.entity.Categoria;
-import br.com.backend.alurachallenge.entity.Video;
 import br.com.backend.alurachallenge.repository.CategoriaRepository;
 
 @RestController
@@ -67,6 +66,23 @@ public class CategoriaController {
 		
 		
 		return new ResponseEntity<CategoriaDto>(new CategoriaDto(categoria), HttpStatus.CREATED);
+	}
+	
+	@PutMapping("/atualiza/{id}")
+	@Transactional
+	public ResponseEntity<CategoriaDto> atualizarCategoria (@PathVariable Long id, @RequestBody @Valid AtualizaCategoriaForm atualizaCategoriaForm) {
+		
+		Optional<Categoria> optional = categoriaRepository.findById(id);
+		
+		if(optional.isPresent()) {
+			
+			Categoria categoria = atualizaCategoriaForm.atualizar(id, categoriaRepository);
+			categoriaRepository.save(categoria);
+			
+			return new ResponseEntity<CategoriaDto>(new CategoriaDto(categoria), HttpStatus.OK);
+		}
+		//return ResponseEntity.notFound().build();
+		return new ResponseEntity<CategoriaDto>(new CategoriaDto(), HttpStatus.NOT_FOUND);
 	}
 	
 }

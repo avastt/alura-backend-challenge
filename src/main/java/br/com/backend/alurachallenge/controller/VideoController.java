@@ -34,73 +34,72 @@ public class VideoController {
 
 	@Autowired
 	private VideoRepository videoRepository;
-	
+
 	@Autowired
 	private CategoriaRepository categoriaRepository;
-	
+
 	@GetMapping
-	public Page<VideoDto> listaVideos (
+	public Page<VideoDto> listaVideos(
 			@PageableDefault(sort = "id", direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) {
 
 		Page<Video> videos = videoRepository.findAll(paginacao);
 		return VideoDto.converter(videos);
 	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<VideoDto> retornaVideo (@PathVariable Long id) {
 
-		
+	@GetMapping("/{id}")
+	public ResponseEntity<VideoDto> retornaVideo(@PathVariable Long id) {
+
 		Optional<Video> video = videoRepository.findById(id);
-		
-		if(video.isPresent()) {
-			
+
+		if (video.isPresent()) {
 
 			return ResponseEntity.ok(new VideoDto(video.get()));
-		} 
-		
-		
+		}
+
 		return ResponseEntity.notFound().build();
 	}
-	
+
 	@PostMapping
 	@Transactional
-	public ResponseEntity<VideoDto> cadastrarVideo (@RequestBody @Valid VideoForm videoForm) {
-		
+	public ResponseEntity<?> cadastrarVideo(@RequestBody @Valid VideoForm videoForm) {
+
 		Video video = videoForm.converter(categoriaRepository);
 		videoRepository.save(video);
-		
-		
+
 		return new ResponseEntity<VideoDto>(new VideoDto(video), HttpStatus.CREATED);
+
 	}
-	
+
 	@PutMapping("/atualiza/{id}")
 	@Transactional
-	public ResponseEntity<VideoDto> atualizarVideo (@PathVariable Long id, @RequestBody @Valid AtualizaVideoForm atualizaVideoForm) {
-		
+	public ResponseEntity<VideoDto> atualizarVideo(@PathVariable Long id,
+			@RequestBody @Valid AtualizaVideoForm atualizaVideoForm) {
+
 		Optional<Video> optional = videoRepository.findById(id);
-		
-		if(optional.isPresent()) {
-			
+
+		if (optional.isPresent()) {
+
 			Video video = atualizaVideoForm.atualizar(id, videoRepository, categoriaRepository);
 			videoRepository.save(video);
-			
-			return new ResponseEntity<VideoDto>(new VideoDto(video), HttpStatus.OK);
+
+			return ResponseEntity.ok(new VideoDto(video));
 		}
-		//return ResponseEntity.notFound().build();
-		return new ResponseEntity<VideoDto>(new VideoDto(), HttpStatus.NOT_FOUND);
+		// return ResponseEntity.notFound().build();
+		return ResponseEntity.notFound().build();
+
 	}
-	
+
 	@DeleteMapping("/deletar/{id}")
 	@Transactional
-	public ResponseEntity<VideoDto> deletarVideo (@PathVariable Long id) {
-		
+	public ResponseEntity<VideoDto> deletarVideo(@PathVariable Long id) {
+
 		Optional<Video> optional = videoRepository.findById(id);
-		
-		if(optional.isPresent()) {
+
+		if (optional.isPresent()) {
 			videoRepository.deleteById(id);
 			return ResponseEntity.ok().build();
 		}
-		//return ResponseEntity.notFound().build();
+		// return ResponseEntity.notFound().build();
 		return new ResponseEntity<VideoDto>(new VideoDto(), HttpStatus.NOT_FOUND);
 	}
 }

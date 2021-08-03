@@ -3,6 +3,8 @@ package br.com.backend.alurachallenge.config.validacao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -36,6 +38,14 @@ public class ErroDeValidacaoHandler {
 		}
 
 		return listaErroDeFormularioDto;
+	}
+	
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(EntityNotFoundException.class)
+	public String handle(EntityNotFoundException exception) {
+
+		String fieldErrors = "Codigo de categoria não encontrado na base";
+		return fieldErrors;
 	}
 }
 

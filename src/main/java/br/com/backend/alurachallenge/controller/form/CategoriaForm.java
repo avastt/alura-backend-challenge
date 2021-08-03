@@ -5,7 +5,6 @@ import javax.validation.constraints.NotEmpty;
 import com.sun.istack.NotNull;
 
 import br.com.backend.alurachallenge.entity.Categoria;
-import br.com.backend.alurachallenge.entity.Video;
 
 public class CategoriaForm {
 

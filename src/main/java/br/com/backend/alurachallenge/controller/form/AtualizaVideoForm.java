@@ -9,7 +9,6 @@ import br.com.backend.alurachallenge.entity.Categoria;
 import br.com.backend.alurachallenge.entity.Video;
 import br.com.backend.alurachallenge.repository.CategoriaRepository;
 import br.com.backend.alurachallenge.repository.VideoRepository;
-import javassist.NotFoundException;
 
 public class AtualizaVideoForm {
 	@NotNull
@@ -69,9 +68,9 @@ public class AtualizaVideoForm {
 			Categoria categoria = categoriaRepository.getById(categoriaId);
 			video.setCategoria(categoria);
 		} catch (EntityNotFoundException e) {
-			e.getMessage();
+			e.getMessage(	);
 		}
-
+		
 		return video;
 	}
 }

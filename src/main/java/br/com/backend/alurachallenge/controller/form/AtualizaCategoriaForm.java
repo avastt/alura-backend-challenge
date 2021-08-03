@@ -5,6 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import com.sun.istack.NotNull;
 
 import br.com.backend.alurachallenge.entity.Categoria;
+import br.com.backend.alurachallenge.repository.CategoriaRepository;
 
 public class AtualizaCategoriaForm {
 	@NotNull
@@ -34,5 +35,15 @@ public class AtualizaCategoriaForm {
 	public Categoria converter() {
 
 		return new Categoria(titulo, cor);
+	}
+
+	public Categoria atualizar(Long id, CategoriaRepository categoriaRepository) {
+
+		Categoria categoria = categoriaRepository.getById(id);
+
+		categoria.setTitulo(this.titulo);
+		categoria.setCor(this.cor);
+
+		return categoria;
 	}
 }
