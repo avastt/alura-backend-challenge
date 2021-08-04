@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.backend.alurachallenge.controller.dto.VideoDto;
@@ -46,6 +47,19 @@ public class VideoController {
 		return VideoDto.converter(videos);
 	}
 
+	@GetMapping("/queryparam")
+	public ResponseEntity<VideoDto> retornaVideoPorQueryParam(@RequestParam(name = "titulo") String titulo) {
+
+		Optional<Video> video = videoRepository.findByTitulo(titulo);
+
+		if (video.isPresent()) {
+
+			return ResponseEntity.ok(new VideoDto(video.get()));
+		}
+
+		return ResponseEntity.notFound().build();
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<VideoDto> retornaVideo(@PathVariable Long id) {
 
