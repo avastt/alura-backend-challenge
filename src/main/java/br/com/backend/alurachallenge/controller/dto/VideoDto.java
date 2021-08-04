@@ -1,5 +1,8 @@
 package br.com.backend.alurachallenge.controller.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 import br.com.backend.alurachallenge.entity.Video;
@@ -69,6 +72,19 @@ public class VideoDto {
 	public static Page<VideoDto> converter(Page<Video> videos) {
 
 		return videos.map(VideoDto::new);
+	}
+	
+	public static List<VideoDto> converter(List<Video> videos) {
+
+		List<VideoDto> list = new ArrayList<VideoDto>();
+		
+		for (Video video : videos) {
+			
+			VideoDto videoDto = new VideoDto(video);
+			list.add(videoDto);
+		}
+		
+		return list;
 	}
 
 }
