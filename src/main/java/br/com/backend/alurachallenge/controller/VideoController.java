@@ -12,6 +12,9 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,11 +61,13 @@ public class VideoController {
 		}
 
 		return ResponseEntity.notFound().build();
-	}
+	} 
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<VideoDto> retornaVideo(@PathVariable Long id) {
+	public ResponseEntity<VideoDto> retornaVideo(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
 
+		System.out.println(userDetails);
+		
 		Optional<Video> video = videoRepository.findById(id);
 
 		if (video.isPresent()) {
@@ -104,6 +109,7 @@ public class VideoController {
 	}
 
 	@DeleteMapping("/deletar/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	@Transactional
 	public ResponseEntity<VideoDto> deletarVideo(@PathVariable Long id) {
 
