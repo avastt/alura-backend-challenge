@@ -33,7 +33,7 @@ import br.com.backend.alurachallenge.repository.CategoriaRepository;
 import br.com.backend.alurachallenge.repository.VideoRepository;
 
 @RestController
-@RequestMapping("/videos")
+@RequestMapping("/v1")
 public class VideoController {
 
 	@Autowired
@@ -42,7 +42,7 @@ public class VideoController {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 
-	@GetMapping
+	@GetMapping("/videos")
 	public Page<VideoDto> listaVideos(
 			@PageableDefault(sort = "id", direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) {
 
@@ -50,7 +50,7 @@ public class VideoController {
 		return VideoDto.converter(videos);
 	}
 
-	@GetMapping("/queryparam")
+	@GetMapping("/videos/queryparam")
 	public ResponseEntity<VideoDto> retornaVideoPorQueryParam(@RequestParam(name = "titulo") String titulo) {
 
 		Optional<Video> video = videoRepository.findByTitulo(titulo);
@@ -63,7 +63,7 @@ public class VideoController {
 		return ResponseEntity.notFound().build();
 	} 
 	
-	@GetMapping("/{id}")
+	@GetMapping("/videos/{id}")
 	public ResponseEntity<VideoDto> retornaVideo(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
 
 		System.out.println(userDetails);
@@ -78,7 +78,7 @@ public class VideoController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@PostMapping
+	@PostMapping("/admin/videos")
 	@Transactional
 	public ResponseEntity<?> cadastrarVideo(@RequestBody @Valid VideoForm videoForm) {
 
@@ -89,7 +89,7 @@ public class VideoController {
 
 	}
 
-	@PutMapping("/atualiza/{id}")
+	@PutMapping("/admin/videos/atualiza/{id}")
 	@Transactional
 	public ResponseEntity<VideoDto> atualizarVideo(@PathVariable Long id,
 			@RequestBody @Valid AtualizaVideoForm atualizaVideoForm) {
@@ -108,7 +108,7 @@ public class VideoController {
 
 	}
 
-	@DeleteMapping("/deletar/{id}")
+	@DeleteMapping("/admin/videos/deletar/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	@Transactional
 	public ResponseEntity<VideoDto> deletarVideo(@PathVariable Long id) {
